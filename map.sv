@@ -13,6 +13,7 @@ logic ready_g, valid_g, ready_c0, valid_c0, ready_stackWrite, valid_stackWrite,
     valid_c1_sp, ready_c1_result, valid_result_g, valid_result_c1,
     ready_pattern_match2, result2, valid_result2, valid_cons_lp, ready_lp_c0_c1,
     ready_lpn, ready_t, valid_t, ready_nlp, ready_result2, valid_nspc, ready_nspc;
+
 int stack[6], resultList[6];
 int list[6];
 
@@ -28,6 +29,7 @@ initial begin
     ready_g <= 1; ready_spt <= 1; ready_sp <= 1; ready_pattern_match2 <= 1;
     ready_f <= 1; ready_t <= 1; ready_cons_lp <= 1; ready_nlp <= 1;
     ready_result2 <= 1; ready_nspc <= 1; ready_lpn <= 1;
+
 end
 
 function element C0(int g, inout logic ready, inout logic valid);
@@ -103,7 +105,7 @@ function element Nil(int g);
     return ret;
 endfunction
 
-function pattern_match(element le, inout int x, inout logic valid_x, inout int l, inout logic valid_l, inout logic result, inout logic valid_result, inout logic ready_pattern_match);
+function void pattern_match(element le, inout int x, inout logic valid_x, inout int l, inout logic valid_l, inout logic result, inout logic valid_result, inout logic ready_pattern_match);
     
     if (le[1] == -1) begin
         result<=0;
@@ -261,10 +263,8 @@ always_ff @(posedge clk) begin
         valid_cons <= 0;
         ready_nlp <= 0;
     end
-end
 
 //function fx
-always_ff @(posedge clk) begin
     if (valid_s && ready_t) begin
         valid_s <= 0;
         ready_t <= 0;
@@ -283,4 +283,6 @@ always_ff @(posedge clk) begin
     else if (ready_t == 0)
         wait_variable <= wait_variable + 1;
 end
+
+
 endmodule
